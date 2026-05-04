@@ -22,7 +22,7 @@ export const useAuthStore = create<AuthState>()(
             logout: () => set({ user: null, token: null }),
         }),
         {
-            name: "auth-storage", // имя ключа в localStorage
+            name: "auth-storage",
         },
     ),
 );
