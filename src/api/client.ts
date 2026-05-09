@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useAuthStore } from "@/store/authStore";
 
 export const apiClient = axios.create({
@@ -15,8 +15,9 @@ apiClient.interceptors.request.use((config) => {
 
 apiClient.interceptors.response.use(
     (response) => response,
-    (error) => {
-        if (error.response?.status === 401) {
+    (error: AxiosError) => {
+        const isLoginRequest = error.config?.url?.includes("/auth/login");
+        if (error.response?.status === 401 && !isLoginRequest) {
             useAuthStore.getState().logout();
             window.location.href = "/login";
         }
